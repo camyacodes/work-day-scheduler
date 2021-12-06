@@ -3,10 +3,18 @@ $(document).ready(function () {
   var currentDay = moment().format("MMMM Do, YYYY");
   $("#currentDay").text(currentDay);
 
-  var time = document.querySelectorAll(".hour");
+  var hours = document.querySelectorAll(".hour");
   var saveBtns = document.querySelectorAll(".button");
   var scheduledEvents = document.querySelectorAll(".event");
   var localStorageEvents = [];
+
+  hours.forEach((item) => {
+    var currentHour = parseInt(moment().format("h ")); 
+    var calendarHour = parseInt(item.innerHTML)
+    if (calendarHour === currentHour) {
+      item.classList.add("present")
+    } 
+})
 
   saveBtns.forEach((element, index) => {
     element.addEventListener("click", () => {
@@ -15,7 +23,7 @@ $(document).ready(function () {
   });
 
   var saveEvent = (index) => {
-    var eventTime = time[index].innerHTML
+    var eventTime = hours[index].innerHTML
     var scheduledEventsText = scheduledEvents[index].value;
     localStorageEvents.push(scheduledEventsText);
     localStorage.setItem(eventTime, JSON.stringify(scheduledEventsText));
@@ -23,10 +31,13 @@ $(document).ready(function () {
   };
 
 scheduledEvents.forEach((element, index) => {
-    var eventTime = time[index].innerHTML
+    var eventTime = hours[index].innerHTML
     element.value = JSON.parse(localStorage.getItem(eventTime))
 })
 
+var testTime = moment().format("h ");
+
+console.log(testTime)
 //   var loadEvent = (index) => {
 //     // var eventTime = time[index].innerHTML
 //     // var savedEvents = JSON.parse(localStorage.getItem(eventTime));
